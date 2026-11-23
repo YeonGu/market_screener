@@ -136,6 +136,7 @@ def update_reference(force=False):
                       "active": bool(r.get("active")), "cik": r.get("cik")} for r in j.get("results", [])]
             url = j.get("next_url")
     df = pd.DataFrame(rows).drop_duplicates("ticker")
+    DATA.mkdir(parents=True, exist_ok=True)
     if len(df) < 3000:
         raise RuntimeError(f"代码表只有 {len(df)} 行，不覆盖旧表")
     df.to_parquet(f, index=False)
@@ -144,6 +145,7 @@ def update_reference(force=False):
 
 # ---------------------------------------------------------------- 拆股
 def splits(since: date) -> pd.DataFrame:
+    DATA.mkdir(parents=True, exist_ok=True)
     f = DATA / "splits.csv"
     if f.exists() and date.fromtimestamp(f.stat().st_mtime) == date.today():
         return pd.read_csv(f, na_filter=False, parse_dates=["execution_date"])
