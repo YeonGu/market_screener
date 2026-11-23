@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>关注名单</title>
+<style>
+/* International Typographic Style
+   一种字体（Helvetica Neue / 苹方），字重和字号做层级；12 栏网格，左 3 栏是悬挂标签；
+   齐左不齐右；黑、灰、一种强调色（红）；细线分隔；等宽数字。 */
+:root{
+  --ink:#111; --mute:#7a7a7a; --faint:#b9b9b9; --rule:#e3e3e3; --bg:#fff; --red:#e4002b;
+  --f:"Helvetica Neue",Helvetica,Arial,"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC",sans-serif;
+  --gut:24px; --label:240px;
+}
+*{box-sizing:border-box}
+html{background:var(--bg);color:var(--ink);font:12px/1.35 var(--f);font-variant-numeric:tabular-nums;
+  -webkit-font-smoothing:antialiased}
+body{margin:0;padding:40px 40px 80px}
+a{color:inherit}
+.grid{display:grid;grid-template-columns:var(--label) 1fr;column-gap:var(--gut)}
+
+/* 刊头 */
+header{border-top:6px solid var(--ink);padding-top:14px;margin-bottom:28px}
+header h1{font-size:clamp(34px,4.4vw,56px);line-height:.95;font-weight:700;letter-spacing:-.02em;margin:0}
+header .sub{margin-left:.25em;white-space:nowrap;font-size:clamp(34px,4.4vw,56px);line-height:.95;font-weight:300;letter-spacing:-.02em;color:var(--mute)}
+.meta{display:grid;grid-template-columns:repeat(4,max-content);column-gap:48px;row-gap:4px;align-content:end;
+  font-size:11px}
+.meta dt{color:var(--mute)} .meta dd{margin:0;font-weight:500}
+.mkt{margin-top:18px;display:flex;gap:28px;font-size:11px}
+.mkt b{font-weight:700;margin-right:6px}
+
+/* 控制条 */
+nav{position:sticky;top:0;z-index:5;background:var(--bg);border-top:1px solid var(--ink);
+  border-bottom:1px solid var(--rule);padding:8px 0;margin-bottom:8px}
+nav .row{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
+nav input[type=search]{font:inherit;border:0;border-bottom:1px solid var(--ink);padding:3px 0;width:180px;
+  outline:none;background:transparent}
+.chip{cursor:pointer;color:var(--mute);user-select:none;white-space:nowrap}
+.chip.on{color:var(--ink);font-weight:700}
+.chip:hover{color:var(--ink)}
+.sep{width:1px;height:14px;background:var(--rule)}
+.count{margin-left:auto;color:var(--mute)}
+
+/* 行业块 */
+section.sector{border-top:2px solid var(--ink);padding-top:10px;margin-top:36px}
+.slabel{position:sticky;top:96px;align-self:start}
+.slabel h2{font-size:26px;line-height:1.05;font-weight:700;margin:0;letter-spacing:-.01em}
+.slabel .etf{margin-top:6px;color:var(--mute);font-size:11px}
+.slabel .etf b{color:var(--ink);font-weight:500}
+.board{margin-bottom:26px}
+.bhead{display:flex;align-items:baseline;gap:14px;padding-bottom:6px;border-bottom:1px solid var(--ink)}
+.bhead h3{font-size:15px;font-weight:700;margin:0}
+.bhead .e{color:var(--mute);font-size:11px}
+.bhead .e b{color:var(--ink);font-weight:500}
+.bhead .n{margin-left:auto;color:var(--mute);font-size:11px}
+
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+th{font-weight:400;color:var(--mute);font-size:10px;text-align:right;padding:6px 6px 4px;white-space:nowrap;
+  cursor:pointer;user-select:none;border-bottom:1px solid var(--rule)}
+th:hover{color:var(--ink)}
+th.l,td.l{text-align:left}
+th.sorted{color:var(--ink);font-weight:700}
+td{padding:3px 6px;text-align:right;border-bottom:1px solid var(--rule);white-space:nowrap}
+tr:hover td{background:#f6f6f6}
+td.t{font-weight:700;width:64px}
+td.nm{overflow:hidden;text-overflow:ellipsis;color:#333}
+td.nm small{color:var(--faint);margin-left:6px}
+td.neg{color:var(--red)}
+td.na{color:var(--faint)}
+td.rk{color:var(--mute)} td.rk b{color:var(--ink)}
+td.bd{color:var(--mute);text-align:left}
+.new{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-left:5px;
+  vertical-align:2px}
+svg.sp{display:block}
+.gone{margin-top:48px;border-top:2px solid var(--ink);padding-top:10px}
+.gone h2{font-size:26px;font-weight:700;margin:0}
+.gone p{margin:0;color:#333;line-height:1.8}
+footer{margin-top:60px;border-top:1px solid var(--ink);padding-top:10px;color:var(--mute);font-size:10px;
+  line-height:1.6}
+footer p{margin:0;max-width:760px}
+
+@media (max-width:900px){ :root{--label:0px} .grid{grid-template-columns:1fr} .slabel{position:static}
+  body{padding:20px} header h1,header .sub{font-size:38px} .meta{grid-template-columns:repeat(2,max-content)} }
+@media print{
+  @page{size:A4 landscape;margin:11mm 10mm}
+  html{font-size:7.2px} body{padding:0}
+  nav,.noprint{display:none}
+  header h1,header .sub{font-size:30px}
+  :root{--label:120px;--gut:14px}
+  .slabel{position:static} .slabel h2{font-size:15px}
+  section.sector{margin-top:14px;break-inside:auto}
+  .board{break-inside:auto;margin-bottom:10px} .bhead{break-after:avoid}
+  tr{break-inside:avoid} td{padding:1.2px 4px} th{padding:2px 4px;font-size:6.5px}
+  tr:hover td{background:none}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>关注名单 <span class="sub" id="asof"></span></h1>
+  <div class="grid" style="margin-top:22px">
+    <div></div>
+    <div><dl class="meta" id="meta"></dl><div class="mkt" id="mkt"></div></div>
+  </div>
+</header>
+
+<nav>
+  <div class="row">
+    <input type="search" id="q" placeholder="代码 / 名称" autocomplete="off">
+    <span class="sep"></span>
+    <span class="chip on" data-pick="all">全部</span>
+    <span class="chip" data-pick="top">前 500</span>
+    <span class="chip" data-pick="board">仅板块前 10 补入</span>
+    <span class="chip" data-pick="new">新进</span>
+    <span class="sep"></span>
+    <span class="chip on" data-view="group">按板块</span>
+    <span class="chip" data-view="flat">平铺</span>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="row" id="sectors" style="margin-top:6px"></div>
+</nav>
+
+<main id="main"></main>
+<div id="gone"></div>
+<footer class="grid">
+  <div></div>
+  <div id="foot"></div>
+</footer>
+
+<script>
+const D = /*__DATA__*/null;
+const COLS = [
+  {k:"t",  h:"代码", l:1, w:70},
+  {k:"n",  h:"名称", l:1},
+  {k:"sp", h:"近 120 日", l:1, nosort:1, w:100},
+  {k:"c",  h:"收盘", w:70},
+  {k:"r1", h:"1 日", w:56}, {k:"r5", h:"5 日", w:56}, {k:"r20", h:"20 日", w:56}, {k:"r60", h:"60 日", w:56},
+  {k:"hi", h:"距 52 周高", w:72}, {k:"m200", h:"距 200 日线", w:76},
+  {k:"adv",h:"成交额 / 日", w:80},
+  {k:"ra", h:"排名 全 · 板", w:84},
+];
+const st = {q:"", pick:"all", view:"group", sec:null, sort:"adv", dir:-1};
+const $ = s => document.querySelector(s);
+const pct = x => x==null ? "—" : (x>0?"+":"") + (x*100).toFixed(1);
+const money = x => x==null ? "—" : x>=1e9 ? (x/1e9).toFixed(2)+"B" : (x/1e6).toFixed(0)+"M";
+const price = x => x==null ? "—" : x>=1000 ? x.toFixed(0) : x>=10 ? x.toFixed(2) : x.toFixed(3);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function spark(v){
+  const a = v.filter(x => x!=null && !isNaN(x)); if (a.length < 2) return "";
+  const W=84, H=18, lo=Math.min(...a), hi=Math.max(...a), r=(hi-lo)||1;
+  let p=[], i0=v.length-a.length;
+  v.forEach((x,i)=>{ if(x!=null) p.push(((i/(v.length-1))*W).toFixed(1)+","+(H-1-((x-lo)/r)*(H-2)).toFixed(1)); });
+  const [lx,ly] = p[p.length-1].split(",");
+  const down = a[a.length-1] < a[0];
+  return `<svg class="sp" width="${W+3}" height="${H}"><polyline fill="none" stroke="#111" stroke-width="1" points="${p.join(" ")}"/>`+
+         `<circle cx="${lx}" cy="${ly}" r="1.8" fill="${down?'#e4002b':'#111'}"/></svg>`;
+}
+function numcell(x, f){ return x==null ? `<td class="na">—</td>` : `<td class="${x<0?'neg':''}">${f(x)}</td>`; }
+function etfline(t){
+  const e = D.etf[t]; if (!t || !e || e.close==null) return t ? `<b>${t}</b>` : "";
+  return `<b>${t}</b> ${price(e.close)} · 5日 ${pct(e.r5)} · 20日 ${pct(e.r20)}`;
+}
+function row(r, flat){
+  const b = D.boards[r.b];
+  const rk = `${r.ra<=D.rule.all?`<b>${r.ra}</b>`:r.ra} · ${r.rb<=D.rule.board&&r.b!=="OTHR"?`<b>${r.rb}</b>`:r.rb}`;
+  return `<tr><td class="t l">${esc(r.t)}${r.new?'<span class="new" title="上一期不在名单里"></span>':""}</td>`+
+    `<td class="nm l" title="${esc(r.n)} — SIC: ${esc(r.sic)}">${esc(r.n)}</td>`+
+    (flat?`<td class="bd">${esc(b.n)}</td>`:"")+
+    `<td class="l">${spark(r.sp)}</td>`+
+    `<td>${price(r.c)}</td>`+numcell(r.r1,pct)+numcell(r.r5,pct)+numcell(r.r20,pct)+numcell(r.r60,pct)+
+    numcell(r.hi,pct)+numcell(r.m200,pct)+`<td>${money(r.adv)}</td><td class="rk">${rk}</td></tr>`;
+}
+function thead(flat){
+  const cs = flat ? [...COLS.slice(0,2), {k:"b", h:"板块", l:1, w:150}, ...COLS.slice(2)] : COLS;
+  return "<tr>"+cs.map(c=>`<th class="${c.l?'l':''} ${st.sort===c.k?'sorted':''}" ${c.w?`style="width:${c.w}px"`:""} ${c.nosort?"":`data-k="${c.k}"`}>`+
+    `${c.h}${st.sort===c.k?(st.dir<0?" ↓":" ↑"):""}</th>`).join("")+"</tr>";
+}
+function cmp(a,b){
+  let x=a[st.sort], y=b[st.sort];
+  if (st.sort==="b"){ x=D.boards[a.b].n; y=D.boards[b.b].n; }
+  if (x==null && y==null) return 0; if (x==null) return 1; if (y==null) return -1;
+  return (typeof x==="string" ? x.localeCompare(y) : x-y) * st.dir;
+}
+function visible(){
+  const q = st.q.trim().toLowerCase();
+  return D.rows.filter(r=>{
+    if (st.sec && D.boards[r.b].s!==st.sec) return false;
+    if (st.pick==="top" && r.ra>D.rule.all) return false;
+    if (st.pick==="board" && r.ra<=D.rule.all) return false;
+    if (st.pick==="new" && !r.new) return false;
+    if (q && !(r.t.toLowerCase().startsWith(q) || r.n.toLowerCase().includes(q))) return false;
+    return true;
+  });
+}
+function render(){
+  const rows = visible();
+  $("#count").textContent = `${rows.length} / ${D.rows.length} 只`;
+  let h = "";
+  if (st.view==="flat"){
+    h = `<section class="sector grid"><div class="slabel"><h2>${st.sec?esc(D.sectors.find(s=>s.k===st.sec).n):"全部"}</h2></div><div><table>${thead(1)}`+
+        rows.slice().sort(cmp).map(r=>row(r,1)).join("")+`</table></div></section>`;
+  } else {
+    for (const s of D.sectors){
+      const bs = Object.entries(D.boards).filter(([k,b])=>b.s===s.k);
+      let inner = "";
+      for (const [bk,b] of bs){
+        const rr = rows.filter(r=>r.b===bk).sort(cmp);
+        if (!rr.length) continue;
+        inner += `<div class="board"><div class="bhead"><h3>${esc(b.n)}</h3><span class="e">${etfline(b.etf)}</span>`+
+                 `<span class="n">${rr.length} 只</span></div><table>${thead(0)}${rr.map(r=>row(r,0)).join("")}</table></div>`;
+      }
+      if (!inner) continue;
+      h += `<section class="sector grid"><div class="slabel"><h2>${esc(s.n)}</h2>`+
+           `<div class="etf">${etfline(s.etf)}</div></div><div>${inner}</div></section>`;
+    }
+  }
+  $("#main").innerHTML = h || `<p style="color:var(--mute)">没有符合条件的名字。</p>`;
+  document.querySelectorAll("th[data-k]").forEach(th=>th.onclick=()=>{
+    const k=th.dataset.k; if (st.sort===k) st.dir*=-1; else {st.sort=k; st.dir=(k==="t"||k==="n"||k==="b"||k==="ra")?1:-1;}
+    render();
+  });
+}
+function init(){
+  $("#asof").textContent = D.asof;
+  const nTop = D.rows.filter(r=>r.ra<=D.rule.all).length;
+  const meta = [
+    ["规则", `全市场成交额前 ${D.rule.all} ∪ 每板块前 ${D.rule.board}`],
+    ["名单", `${D.rows.length} 只（前 ${D.rule.all}：${nTop}，板块补入：${D.rows.length-nTop}）`],
+    ["成交额", `近 ${D.rule.adv_days} 个交易日中位数`],
+    ["数据截至", D.asof + (D.prev_asof ? `　对比 ${D.prev_asof}` : "")],
+  ];
+  $("#meta").innerHTML = meta.map(([a,b])=>`<div><dt>${a}</dt><dd>${b}</dd></div>`).join("");
+  $("#mkt").innerHTML = ["SPY","QQQ"].map(t=>{const e=D.etf[t]; return e&&e.close!=null?
+    `<span><b>${t}</b>${price(e.close)}　1日 ${pct(e.r1)}　5日 ${pct(e.r5)}　20日 ${pct(e.r20)}　距 200 日线 ${pct(e.vs_ma200)}</span>`:""}).join("");
+  $("#sectors").innerHTML = `<span class="chip on" data-sec="">全部行业</span>` +
+    D.sectors.filter(s=>D.rows.some(r=>D.boards[r.b].s===s.k)).map(s=>`<span class="chip" data-sec="${s.k}">${s.n}</span>`).join("");
+  document.querySelectorAll("[data-pick]").forEach(c=>c.onclick=()=>{
+    st.pick=c.dataset.pick; document.querySelectorAll("[data-pick]").forEach(x=>x.classList.toggle("on",x===c)); render();});
+  document.querySelectorAll("[data-view]").forEach(c=>c.onclick=()=>{
+    st.view=c.dataset.view; document.querySelectorAll("[data-view]").forEach(x=>x.classList.toggle("on",x===c)); render();});
+  document.querySelectorAll("[data-sec]").forEach(c=>c.onclick=()=>{
+    st.sec=c.dataset.sec||null; document.querySelectorAll("[data-sec]").forEach(x=>x.classList.toggle("on",x===c)); render();});
+  $("#q").oninput = e => { st.q = e.target.value; render(); };
+  if (D.gone && D.gone.length){
+    $("#gone").innerHTML = `<section class="gone grid"><div><h2>移出</h2><div class="etf" style="color:var(--mute);margin-top:6px">相对 ${D.prev_asof}</div></div>`+
+      `<p>${D.gone.map(g=>`<b>${esc(g.ticker)}</b> <span style="color:var(--mute)">${esc(D.boards[g.board]?.n||"")}</span>`).join("　")}</p></section>`;
+  }
+  $("#foot").innerHTML = `<p>宇宙：Polygon 普通股与 ADR（不含 ETF、优先股、权证、SPAC），当天有成交的 ${D.n_universe} 只里排名。`+
+    `成交额 = 成交量 × VWAP，取近 ${D.rule.adv_days} 日中位数。板块 = SEC EDGAR 的 SIC 码映射到细分板块（个别大名字手工改），`+
+    `板块旁是参考 ETF。价格已按拆股调整、未调股息。「排名 全 · 板」里加粗的是入选原因。红色 = 负值；红点 = 上一期不在名单里。`+
+    `生成于 ${D.built}。　<a href="latest.csv">下载 CSV</a>　<a href="https://github.com/YeonGu/market_screener/tree/main/history">历史名单</a></p>`;
+  render();
+}
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# 密钥
+.env
+.env.*
+# Polygon 原始数据（CI 里放 Actions cache）
+data/
+# 生成的网页（由 Actions 发布到 Pages）
+site/
+__pycache__/
+.DS_Store
