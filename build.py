@@ -8,7 +8,8 @@
   入选      全市场排名 ≤ 500，或板块内排名 ≤ 10（「未归类」板块不参与板块前 10）
 
 输出  site/index.html、site/latest.csv、site/history/（GitHub Pages 发布这个目录）
-      history/watchlist_YYYY-MM-DD.csv（进 git；新进/移出对比的是日期更早的最近一份）
+      data/history/watchlist_YYYY-MM-DD.csv（滚动 60 期，随 data/ 进 Actions cache；新进/移出对比的是
+      日期更早的最近一份，缓存丢了就读 $MS_SITE_URL/latest.csv）
 
     python fetch.py && python build.py
 """
@@ -16,6 +17,7 @@ from __future__ import annotations
 
 import glob
 import json
+import os
 import shutil
 import sys
 from datetime import date, timedelta
@@ -32,7 +34,8 @@ from boards import BOARDS, SECTORS, board_of  # noqa: E402
 
 DATA = fetch.DATA
 SITE = HERE / "site"
-HIST = HERE / "history"
+HIST = DATA / "history"         # 滚动保留在 data/（CI 里随日线进 Actions cache），不进 git
+KEEP_HIST = 60
 TOP_ALL, TOP_BOARD = 500, 10
 N_ADV, MIN_ADV_DAYS = 20, 15
 N_HIST = 260                 # 52 周高、200 日线、走势图
@@ -45,6 +48,23 @@ def load_daily() -> pd.DataFrame:
     d = pd.concat([pd.read_parquet(f) for f in fs], ignore_index=True)
     d["date"] = pd.to_datetime(d.date)
     return d
+
+
+def previous(asof: str) -> pd.DataFrame | None:
+    """上一期名单：先找 data/history 里日期更早的最近一份；缓存丢了就读线上页面当前的 latest.csv。"""
+    olds = sorted(p for p in HIST.glob("watchlist_*.csv") if p.stem[10:] < asof)
+    if olds:
+        return pd.read_csv(olds[-1], na_filter=False)
+    url = os.getenv("MS_SITE_URL")
+    if url:
+        try:
+            p = pd.read_csv(url.rstrip("/") + "/latest.csv", na_filter=False)
+            if p["asof"].iloc[0] < asof:
+                print(f"上一期取自线上 latest.csv（{p['asof'].iloc[0]}）")
+                return p
+        except Exception as e:  # 首次部署前没有线上页面
+            print(f"WARN: 读线上 latest.csv 失败：{type(e).__name__}")
+    return None
 
 
 def adjust_splits(d: pd.DataFrame, s: pd.DataFrame) -> pd.DataFrame:
@@ -109,11 +129,9 @@ def main():
     M.loc[H.iloc[-252:].count() < 240, "off_high"] = np.nan
     w = w.join(M)
 
-    # 和上一期对比：history/ 里日期早于本期的最近一份
-    HIST.mkdir(exist_ok=True)
-    olds = sorted(p for p in HIST.glob("watchlist_*.csv") if p.stem[10:] < str(asof.date()))
-    if olds:
-        prev = pd.read_csv(olds[-1], na_filter=False)
+    # 和上一期对比
+    prev = previous(str(asof.date()))
+    if prev is not None:
         prev_asof = prev["asof"].iloc[0]
         w["new"] = ~w.index.isin(prev.ticker)
         gone = prev[~prev.ticker.isin(w.index)][["ticker", "name", "board"]]
@@ -128,11 +146,22 @@ def main():
     cols = ["asof", "ticker", "name", "type", "board", "board_name", "sic", "sic_desc", "adv", "rank_all",
             "rank_board", "close", "r1", "r5", "r20", "r60", "off_high", "vs_ma50", "vs_ma200", "new", "prev_asof"]
     csv = csv[cols].sort_values(["board", "rank_board"])
+    HIST.mkdir(parents=True, exist_ok=True)
     csv.to_csv(HIST / f"watchlist_{asof.date()}.csv", index=False)
+    hist = sorted(HIST.glob("watchlist_*.csv"))
+    for p in hist[:-KEEP_HIST]:                       # 滚动：只留最近 KEEP_HIST 期
+        p.unlink()
+    hist = hist[-KEEP_HIST:]
     if SITE.exists():
         shutil.rmtree(SITE)
     shutil.copytree(HIST, SITE / "history")
     csv.to_csv(SITE / "latest.csv", index=False)
+    links = "".join(f'<li><a href="{p.name}">{p.stem[10:]}</a></li>' for p in reversed(hist))
+    (SITE / "history" / "index.html").write_text(
+        '<!doctype html><meta charset="utf-8"><title>历史名单</title><style>body{font:14px/1.8 "Helvetica Neue",'
+        'Helvetica,"PingFang SC",sans-serif;margin:40px;color:#111}h1{border-top:6px solid #111;padding-top:12px;'
+        f'font-size:40px;margin:0 0 16px}}ul{{list-style:none;padding:0}}a{{color:#111}}</style><h1>历史名单</h1>'
+        f'<p style="color:#7a7a7a">最近 {KEEP_HIST} 期滚动保留 · <a href="../">返回</a></p><ul>{links}</ul>')
 
     # 网页
     etf = M.reindex(sorted({v[1] for v in BOARDS.values() if v[1]} | {s[2] for s in SECTORS if s[2]} | {"SPY", "QQQ"}))

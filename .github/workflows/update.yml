@@ -6,14 +6,15 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths-ignore: ["history/**", "cache/**", "README.md"]
+    paths-ignore: ["cache/**", "README.md"]
 
 concurrency:
   group: update
   cancel-in-progress: false
 
 permissions:
-  contents: write      # 回写 history/ 与 cache/sic.csv
+  contents: write      # 回写 cache/sic.csv
+  actions: write       # 删除旧的 Actions cache
   pages: write
   id-token: write
 
@@ -53,15 +54,31 @@ jobs:
       - name: build
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+          MS_SITE_URL: https://yeongu.github.io/market_screener   # 缓存丢失时从这里取上一期
         run: python build.py
 
-      - name: commit history
+      # data/ 里现在也有滚动的历史名单，build 之后再存一次（覆盖 fetch 之后那次）
+      - name: save data (with history)
+        uses: actions/cache/save@v4
+        with:
+          path: data
+          key: data-${{ github.run_id }}-h
+
+      - name: prune old caches
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh cache list --repo "$GITHUB_REPOSITORY" --key data- --sort created_at --order desc --limit 100 \
+            --json id --jq '.[2:][].id' | xargs -r -n1 gh cache delete --repo "$GITHUB_REPOSITORY"
+          gh cache list --repo "$GITHUB_REPOSITORY"
+
+      - name: commit sic cache
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add history cache/sic.csv
+          git add cache/sic.csv
           if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
-          git commit -m "data: $(ls history | tail -1 | sed 's/watchlist_//; s/.csv//')"
+          git commit -m "sic: $(ls data/history | tail -1 | sed 's/watchlist_//; s/.csv//')"
           git pull --rebase
           git push
 

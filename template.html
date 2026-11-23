@@ -250,7 +250,7 @@ function init(){
   $("#foot").innerHTML = `<p>宇宙：Polygon 普通股与 ADR（不含 ETF、优先股、权证、SPAC），当天有成交的 ${D.n_universe} 只里排名。`+
     `成交额 = 成交量 × VWAP，取近 ${D.rule.adv_days} 日中位数。板块 = SEC EDGAR 的 SIC 码映射到细分板块（个别大名字手工改），`+
     `板块旁是参考 ETF。价格已按拆股调整、未调股息。「排名 全 · 板」里加粗的是入选原因。红色 = 负值；红点 = 上一期不在名单里。`+
-    `生成于 ${D.built}。　<a href="latest.csv">下载 CSV</a>　<a href="https://github.com/YeonGu/market_screener/tree/main/history">历史名单</a></p>`;
+    `生成于 ${D.built}。　<a href="latest.csv">下载 CSV</a>　<a href="history/">历史名单（最近 60 期）</a></p>`;
   render();
 }
 init();
