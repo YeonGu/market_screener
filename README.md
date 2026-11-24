@@ -20,7 +20,7 @@
 | `boards.py` | SIC → 板块映射与手工修正 |
 | `build.py` | 排名、入选、指标 → `site/`（Pages）+ `data/history/`（滚动 60 期） |
 | `template.html` | 页面模板（瑞士国际主义风格） |
-| `.github/workflows/update.yml` | 定时：UTC 10:00 周二–周六；也可手动 Run workflow |
+| `.github/workflows/update.yml` | 定时：UTC 09:23（备份 13:41）周二–周六；也可手动 Run workflow |
 
 ## 自动化
 
