@@ -619,6 +619,7 @@ cik,sic,sic_desc,edgar_name,fetched
 1345126,2510,Household Furniture,Compass Diversified Holdings,2026-11-23
 1347426,6029,"Commercial Banks, NEC",Macro Bank Inc.,2026-11-23
 1347557,4581,"Airports, Flying Fields & Airport Terminal Services",Pacific Airport Group,2026-11-23
+1349436,1311,Crude Petroleum & Natural Gas,SANDRIDGE ENERGY INC,2026-11-24
 1350593,3490,Miscellaneous Fabricated Metal Products,"Mueller Water Products, Inc.",2026-11-23
 1350653,3841,Surgical & Medical Instruments & Apparatus,"Alphatec Holdings, Inc.",2026-11-23
 1352010,7371,Services-Computer Programming Services,"EPAM Systems, Inc.",2026-11-23
@@ -1176,6 +1177,7 @@ cik,sic,sic_desc,edgar_name,fetched
 1625101,3841,Surgical & Medical Instruments & Apparatus,"PULSE BIOSCIENCES, INC.",2026-11-23
 1625278,7374,Services-Computer Processing & Data Preparation,"NERDWALLET, INC.",2026-11-23
 1625297,2834,Pharmaceutical Preparations,"Supernus, Inc.",2026-11-23
+1625791,3555,Printing Trades Machinery & Equipment,Kornit Digital Ltd.,2026-11-24
 1626115,6282,Investment Advice,PJT Partners Inc.,2026-11-23
 1626971,2834,Pharmaceutical Preparations,"Corvus Pharmaceuticals, Inc.",2026-11-23
 1627223,2800,Chemicals & Allied Products,Chemours Co,2026-11-23
@@ -1709,6 +1711,7 @@ cik,sic,sic_desc,edgar_name,fetched
 1834489,7990,Services-Miscellaneous Amusement & Recreation,Genius Sports Ltd,2026-11-23
 1834584,5961,Retail-Catalog & Mail-Order Houses,"Coupang, Inc.",2026-11-23
 1834622,3580,Refrigeration & Service Industry Machinery,"Hayward Holdings, Inc.",2026-11-23
+1835597,2834,Pharmaceutical Preparations,PepGen Inc.,2026-11-24
 1835632,3674,Semiconductors & Related Devices,"Marvell Technology, Inc.",2026-11-23
 1835830,7372,Services-Prepackaged Software,"Klaviyo, Inc.",2026-11-23
 1835856,6163,Loan Brokers,Better Home & Finance Holding Co,2026-11-23
@@ -1943,6 +1946,7 @@ cik,sic,sic_desc,edgar_name,fetched
 1996810,3600,Electronic & Other Electrical Equipment (No Computer Equip),GE Vernova Inc.,2026-11-23
 1996862,2070,Fats & Oils,Bunge Global SA,2026-11-23
 1997038,2836,"Biological Products, (No Diagnostic Substances)","Iambic Therapeutics, Inc.",2026-11-23
+1997201,4731,Arrangement of  Transportation of  Freight & Cargo,PS International Group Ltd.,2026-11-24
 1997350,6411,"Insurance Agents, Brokers & Service",Accelerant Holdings,2026-11-23
 1997464,6200,"Security & Commodity Brokers, Dealers, Exchanges & Services",Marex Group Ltd,2026-11-23
 1997652,1311,Crude Petroleum & Natural Gas,Tamboran Resources Corp,2026-11-23
