@@ -270,6 +270,7 @@ cik,sic,sic_desc,edgar_name,fetched
 1088856,2834,Pharmaceutical Preparations,CORCEPT THERAPEUTICS INC,2026-11-23
 1089063,5940,Retail-Miscellaneous Shopping Goods Stores,"DICK'S SPORTING GOODS, INC.",2026-11-23
 1089113,6035,"Savings Institution, Federally Chartered",HSBC HOLDINGS PLC,2026-11-23
+1090009,6021,National Commercial Banks,SOUTHERN FIRST BANCSHARES INC,2026-11-25
 1090012,1311,Crude Petroleum & Natural Gas,DEVON ENERGY CORP/DE,2026-11-23
 1090425,6798,Real Estate Investment Trusts,LAMAR ADVERTISING CO/NEW,2026-11-23
 1090727,4210,Trucking & Courier Services (No Air),UNITED PARCEL SERVICE INC,2026-11-23
@@ -1313,6 +1314,7 @@ cik,sic,sic_desc,edgar_name,fetched
 1679788,6199,Finance Services,"Coinbase Global, Inc.",2026-11-23
 1680062,3559,"Special Industry Machinery, NEC","ACM Research, Inc.",2026-11-23
 1680247,1389,"Oil & Gas Field Services, NEC",ProPetro Holding Corp.,2026-11-23
+1680367,2834,Pharmaceutical Preparations,"Shattuck Labs, Inc.",2026-11-25
 1680581,2834,Pharmaceutical Preparations,"Fulcrum Therapeutics, Inc.",2026-11-23
 1681459,3533,Oil & Gas Field Machinery & Equipment,TechnipFMC plc,2026-11-23
 1681622,3679,"Electronic Components, NEC",Varex Imaging Corp,2026-11-23
@@ -1985,6 +1987,7 @@ cik,sic,sic_desc,edgar_name,fetched
 2021728,3674,Semiconductors & Related Devices,Cerebras Systems Inc.,2026-11-23
 2023554,3572,Computer Storage Devices,Sandisk Corp,2026-11-23
 2023658,2834,Pharmaceutical Preparations,Bicara Therapeutics Inc.,2026-11-23
+2024876,7310,Services-Advertising,Everbright Digital Holding Ltd.,2026-11-25
 2025410,3724,Aircraft Engines & Engine Parts,"StandardAero, Inc.",2026-11-23
 2026053,6282,Investment Advice,PERSHING SQUARE INC.,2026-11-23
 2026478,4833,Television Broadcasting Stations,Newsmax Inc.,2026-11-23
