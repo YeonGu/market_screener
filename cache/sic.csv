@@ -683,6 +683,7 @@ cik,sic,sic_desc,edgar_name,fetched
 1389545,6199,Finance Services,Stablecoin Development Corp,2026-11-23
 1390478,2834,Pharmaceutical Preparations,"SELLAS Life Sciences Group, Inc.",2026-11-23
 1390777,6022,State Commercial Banks,Bank of New York Mellon Corp,2026-11-23
+1392380,2860,Industrial Organic Chemicals,"Gevo, Inc.",2026-11-26
 1393052,7372,Services-Prepackaged Software,VEEVA SYSTEMS INC,2026-11-23
 1393311,6798,Real Estate Investment Trusts,Public Storage,2026-11-23
 1393434,2834,Pharmaceutical Preparations,"OCULAR THERAPEUTIX, INC",2026-11-23
@@ -751,6 +752,7 @@ cik,sic,sic_desc,edgar_name,fetched
 1424182,6798,Real Estate Investment Trusts,"Broadstone Net Lease, Inc.",2026-11-23
 1424929,3751,"Motorcycles, Bicycles & Parts",FOX FACTORY HOLDING CORP,2026-11-23
 1425205,2836,"Biological Products, (No Diagnostic Substances)","IOVANCE BIOTHERAPEUTICS, INC.",2026-11-23
+1425292,2870,Agricultural Chemicals,"CVR PARTNERS, LP",2026-11-26
 1425450,3841,Surgical & Medical Instruments & Apparatus,ORTHOPEDIATRICS CORP,2026-11-23
 1426800,2834,Pharmaceutical Preparations,"ASSEMBLY BIOSCIENCES, INC.",2026-11-23
 14272,2834,Pharmaceutical Preparations,BRISTOL MYERS SQUIBB CO,2026-11-23
@@ -1729,6 +1731,7 @@ cik,sic,sic_desc,edgar_name,fetched
 1839341,6199,Finance Services,"Core Scientific, Inc./tx",2026-11-23
 1839839,3442,"Metal Doors, Sash, Frames, Moldings & Trim","Janus International Group, Inc.",2026-11-23
 1840502,7370,"Services-Computer Programming, Data Processing, Etc.",Taboola.com Ltd.,2026-11-23
+1840706,7374,Services-Computer Processing & Data Preparation,SOPHiA GENETICS SA,2026-11-26
 1840776,6411,"Insurance Agents, Brokers & Service","Hagerty, Inc.",2026-11-23
 1840856,7372,Services-Prepackaged Software,"SOUNDHOUND AI, INC.",2026-11-23
 1841156,7389,"Services-Business Services, NEC","Paymentus Holdings, Inc.",2026-11-23
@@ -2058,6 +2061,7 @@ cik,sic,sic_desc,edgar_name,fetched
 2090646,7374,Services-Computer Processing & Data Preparation,Boost Run Inc.,2026-11-23
 2091017,1040,Gold and Silver Ores,Sunshine Silver Mining & Refining Co,2026-11-23
 2091349,2834,Pharmaceutical Preparations,"First Tracks Biotherapeutics, Inc.",2026-11-23
+2091467,7500,"Services-Automotive Repair, Services & Parking",Boyd Group Services Inc.,2026-11-26
 2092574,7372,Services-Prepackaged Software,"Swarmer, Inc",2026-11-23
 2093507,1381,Drilling Oil & Gas Wells,Greenland Energy Co,2026-11-23
 2093536,3728,"Aircraft Parts & Auxiliary Equipment, NEC","Arxis, Inc.",2026-11-23
@@ -2074,8 +2078,10 @@ cik,sic,sic_desc,edgar_name,fetched
 2101698,3490,Miscellaneous Fabricated Metal Products,Elmet Group Co.,2026-11-23
 2104052,4953,Refuse Systems,Enviri Corp,2026-11-23
 2104204,3826,Laboratory Analytical Instruments,"Alamar Biosciences, Inc.",2026-11-23
+2104882,6792,Oil Royalty Traders,"EagleRock Land, LLC",2026-11-26
 2105139,5072,Wholesale-Hardware,ADI GLOBAL DISTRIBUTION INC.,2026-11-23
 2105398,7370,"Services-Computer Programming, Data Processing, Etc.","Csquare, Inc.",2026-11-23
+2105965,6022,State Commercial Banks,West Coast Community Bancorp,2026-11-26
 2107018,3360,Nonferrous Foundries (Castings),DPC Holdings PLC,2026-11-23
 21076,2842,"Specialty Cleaning, Polishing and Sanitation Preparations",CLOROX CO /DE/,2026-11-23
 2109150,3621,Motors & Generators,INNIO N.V.,2026-11-23
@@ -2624,6 +2630,7 @@ cik,sic,sic_desc,edgar_name,fetched
 861459,1600,Heavy Construction Other Than Bldg Const - Contractors,GRANITE CONSTRUCTION INC,2026-11-23
 861842,6022,State Commercial Banks,CATHAY GENERAL BANCORP,2026-11-23
 861884,5051,Wholesale-Metals Service Centers & of fices,"RELIANCE, INC.",2026-11-23
+862831,6021,National Commercial Banks,FINANCIAL INSTITUTIONS INC,2026-11-26
 863064,1000,Metal Mining,RIO TINTO PLC,2026-11-23
 86312,6331,"Fire, Marine & Casualty Insurance","TRAVELERS COMPANIES, INC.",2026-11-23
 863436,3672,Printed Circuit Boards,BENCHMARK ELECTRONICS INC,2026-11-23
